@@ -2,47 +2,46 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Event;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        // return Event::orderBy('date', 'desc')->paginate(15);
+        return Event::all();
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(Request $r)
     {
-        //
+        $data = $r->validate([
+            'title' => 'required',
+            'description' => 'nullable',
+            'date' => 'required|date',
+            'location' => 'required',
+            'capacity' => 'required|integer|min:0'
+        ]);
+        return Event::create($data);
     }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(Event $event)
     {
-        //
+        return $event->loadCount('participations');
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $r, Event $event)
     {
-        //
+        $data = $r->validate([
+            'title' => 'sometimes',
+            'description' => 'nullable',
+            'date' => 'sometimes|date',
+            'location' => 'sometimes',
+            'capacity' => 'sometimes|integer|min:0'
+        ]);
+        $event->update($data);
+        return $event;
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(Event $event)
     {
-        //
+        $event->delete();
+        return response()->noContent();
     }
 }
