@@ -16,4 +16,9 @@ class Student extends Model
         'year_level',
         'campus',
     ];
+
+    public function participations()
+    {
+        return $this->hasMany(\App\Models\Participation::class);
+    }
 }

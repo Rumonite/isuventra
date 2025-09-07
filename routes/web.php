@@ -65,3 +65,7 @@ Route::post('/events/{event}/participate', function ($eventId, \Illuminate\Http\
 
     return back()->with('success', 'You have successfully joined the event!');
 });
+
+    // Admin Dashboard Route
+    use App\Http\Controllers\AdminController;
+    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
