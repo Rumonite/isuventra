@@ -1,15 +1,81 @@
-<?php
+ <?php
+
+// use App\Http\Controllers\ProfileController;
+// use Illuminate\Support\Facades\Route;
+
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
+
+// Route::middleware('auth')->group(function () {
+//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+// });
+
+// require __DIR__.'/auth.php';
+
+
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{StudentController, EventController, ParticipationController, ReportController};
-use App\Models\Participation;
-use App\Models\Student;
-use Illuminate\Http\Request;
-use App\Models\Event;
+
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+use App\Models\Student;
+use App\Models\Event;
+use App\Models\Participation;
+
+Route::get('/dashboard', function () {
+    $students = Student::count();
+    $events = Event::count();
+    $participations = Participation::count();
+
+    // Recent participations (last 10)
+    $recentParticipations = Participation::with(['student', 'event'])
+        ->orderByDesc('time_in')
+        ->limit(10)
+        ->get();
+
+    // Top 5 events by participation count
+    $topEvents = Event::withCount('participations')
+        ->orderByDesc('participations_count')
+        ->limit(5)
+        ->get();
+
+    // Top 5 students by participation count
+    $topStudents = Student::withCount('participations')
+        ->orderByDesc('participations_count')
+        ->limit(5)
+        ->get();
+
+    // For chart: event titles and participation counts
+    $eventParticipationData = Event::withCount('participations')
+        ->orderByDesc('participations_count')
+        ->limit(10)
+        ->get(['title', 'participations_count']);
+
+    return view('dashboard', compact(
+        'students', 'events', 'participations',
+        'recentParticipations', 'topEvents', 'topStudents',
+        'eventParticipationData'
+    ));
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__.'/auth.php';
 
 // API JSON returns
 Route::apiResource('students', StudentController::class);
@@ -24,6 +90,7 @@ Route::get('reports/campus-percentage', [ReportController::class, 'campusPercent
 Route::get('/students-frontend', function () {
     return view('students.frontend');
 });
+
 
 // (Only access event id)
 // Route::get('/events/{event}/join', function ($eventId) {
@@ -72,3 +139,6 @@ Route::post('/events/{event}/participate', function ($eventId, \Illuminate\Http\
 use App\Http\Controllers\AdminController;
 
 Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+
+
+
