@@ -58,9 +58,6 @@
                             >
                                 Join Event
                             </button>
-                            <a href="{{ url('admin/dashboard') }}" class="text-sm text-gray-600 dark:text-gray-300 hover:underline">
-                                ← Back to Dashboard
-                            </a>
                         </div>
                     </form>
 
