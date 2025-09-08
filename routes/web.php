@@ -5,6 +5,7 @@ use App\Http\Controllers\{StudentController, EventController, ParticipationContr
 use App\Models\Participation;
 use App\Models\Student;
 use Illuminate\Http\Request;
+use App\Models\Event;
 
 Route::get('/', function () {
     return view('welcome');
@@ -19,18 +20,19 @@ Route::apiResource('participations', ParticipationController::class)->only(['ind
 Route::get('reports/participation-per-event', [ReportController::class, 'participationPerEvent']);
 Route::get('reports/campus-percentage', [ReportController::class, 'campusPercentage']);
 
-// Simple frontend test pages
+// Simple frontend test page
 Route::get('/students-frontend', function () {
     return view('students.frontend');
 });
 
-Route::get('/events/{event}/join', function ($eventId) {
-    return view('events.join', compact('eventId'));
-});
+// (Only access event id)
+// Route::get('/events/{event}/join', function ($eventId) {
+//     return view('events.join', compact('eventId'));
+// });
 
 // Student joins an event
-Route::get('/events/{event}/join', function ($eventId) {
-    return view('events.join', compact('eventId'));
+Route::get('/events/{event}/join', function (Event $event) {
+    return view('events.join', compact('event'));
 });
 
 // Event participation (form submit)
@@ -66,6 +68,7 @@ Route::post('/events/{event}/participate', function ($eventId, \Illuminate\Http\
     return back()->with('success', 'You have successfully joined the event!');
 });
 
-    // Admin Dashboard Route
-    use App\Http\Controllers\AdminController;
-    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+// Admin Dashboard Route
+use App\Http\Controllers\AdminController;
+
+Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');

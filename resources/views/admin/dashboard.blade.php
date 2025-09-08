@@ -73,7 +73,11 @@
                     <tbody>
                         @forelse($topEvents as $event)
                             <tr>
-                                <td>{{ $event->title }}</td>
+                                <td>
+                                    <a href="{{ url('/events/' . $event->id . '/join') }}">
+                                        {{ $event->title }}
+                                    </a>
+                                </td>
                                 <td>{{ $event->participations_count }}</td>
                             </tr>
                         @empty
