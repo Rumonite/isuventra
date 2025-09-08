@@ -62,7 +62,7 @@
                                 </span>
                             </span>
                             <span>
-                                Mitz F. Ignacio
+                                <a href="https://github.com/Rumonite/" target="_blank">Mitz F. Ignacio - Rumonite</a>
                             </span>
                         </li>
                         <li class="flex items-center gap-4 py-2 relative before:border-l before:border-[#e3e3e0] dark:before:border-[#3E3E3A] before:bottom-1/2 before:top-0 before:left-[0.4rem] before:absolute">
@@ -72,22 +72,22 @@
                                 </span>
                             </span>
                             <span>
-                               Shaine Paolo B. Valdez
+                               <a href="https://github.com/Pao69/" target="_blank">Shaine Paolo B. Valdez - Shaiyon</a>
                             </span>
                         </li>
                     </ul>
                     <ul class="flex gap-3 text-sm leading-normal">
                         <li>
-                            <h1>Developed with Laravel</h1>
+                            <h1>Developed mainly with Laravel</h1>
                         </li>
                     </ul>
                 </div>
                 <div class="bg-[#fff2f2] dark:bg-[#1D0002] relative lg:-ml-px -mb-px lg:mb-0 rounded-t-lg lg:rounded-t-none lg:rounded-r-lg aspect-[335/376] lg:aspect-auto w-full lg:w-[438px] shrink-0 overflow-hidden"
-     style="background-image: url('https://cdn-www.bluestacks.com/bs-images/01j8pxjwp99h55vn3a3k.webp'); 
-            background-size: cover; 
-            background-position: center; 
-            background-repeat: no-repeat;">
-</div>
+                    style="background-image: url('https://cdn-www.bluestacks.com/bs-images/01j8pxjwp99h55vn3a3k.webp'); 
+                            background-size: cover; 
+                            background-position: center; 
+                            background-repeat: no-repeat;">
+                </div>
 
             </main>
         </div>
