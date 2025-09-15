@@ -1,34 +1,34 @@
 <?php
 
-// use App\Http\Controllers\ProfileController;
-// use Illuminate\Support\Facades\Route;
-
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
-
-// Route::middleware('auth')->group(function () {
-//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-// });
-
-// require __DIR__.'/auth.php';
-
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 use App\Models\Student;
 use App\Models\Event;
 use App\Models\Participation;
 use App\Http\Controllers\{StudentController, EventController, ParticipationController, ReportController, ProfileController, AdminController};
 
-//Main Page (Not much design yet)
+
 Route::get('/', function () {
-    return view('welcome');
+    return Inertia::render('Welcome', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
 });
+
+// Route::get('/dashboard', function () {
+//     return Inertia::render('Dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__.'/auth.php';
 
 // dashboard stats (Required by /admin/dashboard for statistics [too lazy to recode everything in AdminController])
 Route::get('/dashboard', function () {
@@ -156,3 +156,4 @@ Route::resource('admin/students', StudentWebController::class)->only(['store', '
 // Route::post('/students', [StudentWebController::class, 'store'])->name('students.store');
 // Route::delete('/students/{student}', [StudentWebController::class, 'destroy'])->name('students.destroy');
 // Route::get('/dashboard/students', [StudentWebController::class, 'index'])->name('students.index');
+

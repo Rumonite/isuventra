@@ -42,7 +42,7 @@ class AdminController extends Controller
         // 👇 Add this line to get all students
         $studentsList = Student::all();
 
-        return view('dashboard', compact(
+        return view('resources\js\Pages\Dashboard.vue', compact(
             'students',
             'events',
             'participations',
