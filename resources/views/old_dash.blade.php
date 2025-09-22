@@ -197,50 +197,50 @@
 {{-- Add Student Form --}}
 <form action="{{ route('students.store') }}" method="POST" class="grid grid-cols-1 md:grid-cols-5 gap-3 mb-4">
     @csrf
-    <input 
-        type="text" 
-        name="student_id" 
-        placeholder="Student ID" 
-        required 
+    <input
+        type="text"
+        name="student_id"
+        placeholder="Student ID"
+        required
         class="border p-2 rounded dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100"
     >
 
-    <input 
-        type="text" 
-        name="name" 
-        placeholder="Full Name" 
-        required 
+    <input
+        type="text"
+        name="name"
+        placeholder="Full Name"
+        required
         class="border p-2 rounded dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100"
     >
 
-    <input 
-        type="text" 
-        name="course" 
-        placeholder="Course (e.g. BSIT)" 
-        required 
+    <input
+        type="text"
+        name="course"
+        placeholder="Course (e.g. BSIT)"
+        required
         class="border p-2 rounded dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100"
     >
 
-    <input 
-        type="number" 
-        name="year_level" 
-        placeholder="Year Level (e.g. 1, 2, 3, 4)" 
-        required 
-        min="1" 
-        max="5" 
+    <input
+        type="number"
+        name="year_level"
+        placeholder="Year Level (e.g. 1, 2, 3, 4)"
+        required
+        min="1"
+        max="5"
         class="border p-2 rounded dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100"
     >
 
-    <input 
-        type="text" 
-        name="campus" 
-        placeholder="Campus (e.g. Cauayan)" 
-        required 
+    <input
+        type="text"
+        name="campus"
+        placeholder="Campus (e.g. Cauayan)"
+        required
         class="border p-2 rounded dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100"
     >
 
-    <button 
-        type="submit" 
+    <button
+        type="submit"
         class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded col-span-1 md:col-span-5"
     >
         Add Student

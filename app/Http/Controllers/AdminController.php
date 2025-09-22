@@ -10,9 +10,6 @@ use App\Models\Participation;
 
 class AdminController extends Controller
 {
-    /**
-     * Display the admin dashboard.
-     */
     public function dashboard()
     {
         $students = Student::count();
@@ -39,7 +36,6 @@ class AdminController extends Controller
             ->limit(10)
             ->get(['title', 'participations_count']);
 
-        // 👇 Add this line to get all students
         $studentsList = Student::all();
 
         return view('resources\js\Pages\Dashboard.vue', compact(
@@ -50,7 +46,7 @@ class AdminController extends Controller
             'topEvents',
             'topStudents',
             'eventParticipationData',
-            'studentsList' // 👈 pass to view
+            'studentsList'
         ));
     }
 }
