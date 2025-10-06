@@ -37,9 +37,10 @@ class ParticipationSeeder extends Seeder
         $pairs = array_slice($pairs, 0, min(100, count($pairs)));
 
         foreach ($pairs as $pair) {
-            Participation::create([
+            \App\Models\Participation::factory()->create([
                 'student_id' => $pair['student_id'],
                 'event_id'   => $pair['event_id'],
+                // Optional: override status if you want
                 'status'     => fake()->randomElement(['registered', 'attended', 'missed']),
             ]);
         }

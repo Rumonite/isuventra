@@ -73,7 +73,7 @@
         <ul class="space-y-2">
             @forelse($studentsList as $student)
                 <li class="flex justify-between items-center px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800 transition">
-                    <span class="text-gray-800 dark:text-gray-100">{{ $student->student_id }} - {{ $student->name }}</span>
+                    <span class="text-gray-800 dark:text-gray-100">{{ $student->student_id }} - {{ $student->name }} - {{ $student->campus}}</span>
                     <form action="{{ route('students.destroy', $student->id) }}" method="POST" class="inline">
                         @csrf
                         @method('DELETE')
