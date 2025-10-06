@@ -10,7 +10,7 @@ class StudentWebController extends Controller
     public function index()
     {
         $studentsList = Student::all();
-        return view('dashboard', compact('studentsList'));
+        return view('managestudents', compact('studentsList'));
     }
 
 

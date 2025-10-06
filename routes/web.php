@@ -89,11 +89,15 @@ Route::apiResource('participations', ParticipationController::class)->only(['ind
 // Route::get('reports/participation-per-event', [ReportController::class, 'participationPerEvent']);
 // Route::get('reports/campus-percentage', [ReportController::class, 'campusPercentage']);
 
+//NOW REDUNDANT, NO MORE REDIRECTS NEEDED!!!
+// Route::middleware(['auth', 'verified'])->group(function () {
+    
+//     // Route::redirect('/dashboard', '/admin/dashboard');
+//     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+// });
+
 // /dashboard/ to /admin/dashboard redirect (middleware prot. ofc)
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::redirect('/dashboard', '/admin/dashboard');
-    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-});
+Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard')->middleware(['auth', 'verified']);
 
 // (Only access event id) - NOW REDUNDANT
 // Route::get('/events/{event}/join', function ($eventId) {
@@ -148,9 +152,13 @@ Route::post('/events/{event}/participate', function ($eventId, \Illuminate\Http\
 Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])
     ->middleware(['auth', 'verified'])
     ->name('admin.dashboard');
+use App\Http\Controllers\StudentWebController;
+Route::get('/admin/studentmgmt', [StudentWebController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('admin.studentmgmt');
 
 // Student CRUD
-use App\Http\Controllers\StudentWebController;
+
 
 Route::resource('admin/students', StudentWebController::class)->only(['store', 'destroy']);
 // Route::post('/students', [StudentWebController::class, 'store'])->name('students.store');
