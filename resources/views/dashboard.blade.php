@@ -55,6 +55,7 @@
                                     <thead>
                                         <tr class="text-left border-b border-gray-300 dark:border-gray-600">
                                             <th class="px-2 py-1">Student</th>
+                                            <th class="px-2 py-1">From</th>
                                             <th class="px-2 py-1">Event</th>
                                             <th class="px-2 py-1">Time In</th>
                                         </tr>
@@ -63,6 +64,7 @@
                                         @forelse($recentParticipations as $p)
                                             <tr class="hover:bg-blue-100/60 dark:hover:bg-gray-800 transition">
                                                 <td class="px-2 py-1">{{ $p->student->name ?? 'N/A' }}</td>
+                                                <td class="px-2 py-1">{{ $p->student->campus ?? 'N/A' }}</td>
                                                 <td class="px-2 py-1">
                                                     @if($p->event)
                                                         <a href="{{ url('/events/' . $p->event->id . '/join') }}" class="text-blue-600 dark:text-blue-400 hover:underline font-semibold">
@@ -152,6 +154,7 @@
         </div>
     </div>
 
+    
     @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
