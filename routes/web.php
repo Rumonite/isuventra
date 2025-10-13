@@ -91,7 +91,7 @@ Route::apiResource('participations', ParticipationController::class)->only(['ind
 
 //NOW REDUNDANT, NO MORE REDIRECTS NEEDED!!!
 // Route::middleware(['auth', 'verified'])->group(function () {
-    
+
 //     // Route::redirect('/dashboard', '/admin/dashboard');
 //     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 // });
@@ -152,12 +152,17 @@ Route::post('/events/{event}/participate', function ($eventId, \Illuminate\Http\
 Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])
     ->middleware(['auth', 'verified'])
     ->name('admin.dashboard');
+
 use App\Http\Controllers\StudentWebController;
+
 Route::get('/admin/studentmgmt', [StudentWebController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('admin.studentmgmt');
 
 // Student CRUD
+use App\Http\Controllers\AnalyticsController;
+
+Route::get('/analytics/predict-all', [App\Http\Controllers\AnalyticsController::class, 'predictAllEventTypes']);
 
 
 Route::resource('admin/students', StudentWebController::class)->only(['store', 'destroy']);

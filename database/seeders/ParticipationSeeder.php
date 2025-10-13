@@ -19,28 +19,25 @@ class ParticipationSeeder extends Seeder
             return;
         }
 
-        // Generate all possible student-event pairs
         $pairs = [];
         foreach ($students as $student) {
             foreach ($events as $event) {
                 $pairs[] = [
                     'student_id' => $student->id,
                     'event_id'   => $event->id,
+                    'time_in'    => $event->date ?? now(), // use event date
                 ];
             }
         }
 
-        // Shuffle to randomize
         shuffle($pairs);
-
-        // Limit to 100 or however many pairs exist
-        $pairs = array_slice($pairs, 0, min(100, count($pairs)));
+        $pairs = array_slice($pairs, 0, min(300, count($pairs)));
 
         foreach ($pairs as $pair) {
-            \App\Models\Participation::factory()->create([
+            Participation::factory()->create([
                 'student_id' => $pair['student_id'],
                 'event_id'   => $pair['event_id'],
-                // Optional: override status if you want
+                'time_in'    => $pair['time_in'],
                 'status'     => fake()->randomElement(['registered', 'attended', 'missed']),
             ]);
         }
