@@ -8,27 +8,21 @@ class AnalyticsController extends Controller
 {
     public function predictAllEventTypes()
     {
-        // Step 1: Fetch all event participations grouped by title
+        // Fetch all event participations grouped by title
         $eventData = DB::table('participations')
             ->join('events', 'participations.event_id', '=', 'events.id')
             ->select('events.title', DB::raw('COUNT(participations.id) as total_participations'))
             ->groupBy('events.title')
             ->get();
 
-        // Step 2: Group data by base event type (e.g. "Roadshow", "Seminar", "Workshop")
+        // Group data by base event type (e.g. "Roadshow", "Seminar", "Workshop")
         $grouped = [];
 
         foreach ($eventData as $row) {
-            // Extract year from title (e.g. "Roadshow 2023")
             if (preg_match('/\b(19|20)\d{2}\b/', $row->title, $matches)) {
                 $year = (int)$matches[0];
-                // Remove year from the title to get the event type name
                 $eventType = trim(preg_replace('/\b(19|20)\d{2}\b/', '', $row->title));
-                $eventType = preg_replace('/\s+/', ' ', $eventType); // Clean extra spaces
-
-                if (!isset($grouped[$eventType])) {
-                    $grouped[$eventType] = [];
-                }
+                $eventType = preg_replace('/\s+/', ' ', $eventType);
 
                 $grouped[$eventType][] = [
                     'year' => $year,
@@ -37,13 +31,12 @@ class AnalyticsController extends Controller
             }
         }
 
-        // Step 3: Compute 3-point moving average for each event type
+        // Compute 3-point moving average with forward prediction
         $results = [];
 
         foreach ($grouped as $type => $data) {
             $data = collect($data)->sortBy('year')->values();
 
-            // Skip if not enough data
             if ($data->count() < 3) {
                 $results[$type] = [
                     'error' => 'Not enough years for a 3-point moving average.',
@@ -55,26 +48,41 @@ class AnalyticsController extends Controller
             $counts = $data->pluck('total_participations')->toArray();
             $years  = $data->pluck('year')->toArray();
 
-            $movingAverages = [];
             $window = 3;
+            $movingAverages = [];
 
+            // Compute moving averages for existing data
             for ($i = $window - 1; $i < count($counts); $i++) {
                 $subset = array_slice($counts, $i - $window + 1, $window);
                 $avg = array_sum($subset) / $window;
                 $movingAverages[$years[$i]] = round($avg, 2);
             }
 
-            // Predict next year using the latest moving average
-            $nextYear = end($years) + 1;
-            $predicted = end($movingAverages);
+            // Predict 4 future years iteratively using previous predictions
+            $futurePredictions = [];
+            $currentCounts = $counts;
+
+            $lastYear = end($years);
+
+            for ($i = 1; $i <= 4; $i++) {
+                // Take last 3 values (can include previously predicted ones)
+                $recent = array_slice($currentCounts, -3);
+                $predicted = round(array_sum($recent) / 3, 2);
+                $futureYear = $lastYear + $i;
+
+                $futurePredictions[] = [
+                    'year' => $futureYear,
+                    'predicted_count' => $predicted,
+                ];
+
+                // Append prediction to the rolling window
+                $currentCounts[] = $predicted;
+            }
 
             $results[$type] = [
                 'history' => $data->values(),
                 'moving_average' => $movingAverages,
-                'prediction' => [
-                    'year' => $nextYear,
-                    'predicted_count' => $predicted,
-                ],
+                'predictions' => $futurePredictions,
             ];
         }
 
